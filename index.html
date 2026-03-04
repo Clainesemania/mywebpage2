@@ -13,42 +13,32 @@
   <link rel="stylesheet" href="assets/css/main.css" />
   <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
 		<style>
-  .image<style>
-  /* FORCE animations to work - Override template */
-  
-  .image.featured {
-    overflow: hidden !important;
-    display: block !important;
-  }
-  
+  /* 1. Featured Image Animation */
   .image.featured img {
-    transition: transform 0.5s ease !important;
-    will-change: transform !important;
+    transition: transform 0.3s ease;
   }
-  
   .image.featured:hover img {
-    transform: scale(1.2) !important;
+    transform: scale(1.1) !important;
   }
-  
-  .button.style1 {
+
+  /* 2. Custom Button Style & Animation */
+  .button.style2 {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
     border-radius: 30px !important;
-    padding: 12px 30px !important;
-    transition: all 0.3s ease !important;
-    will-change: transform !important;
+    padding: 12px 35px !important;
+    display: inline-block !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
   }
-  
-  .button.style1:hover {
+  .button.style2:hover {
     transform: translateY(-5px) !important;
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6) !important;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.5) !important;
   }
-  
+
+  /* 3. Highlight Section Animation */
   .highlight {
     transition: transform 0.3s ease !important;
-    will-change: transform !important;
   }
-  
   .highlight:hover {
     transform: translateY(-10px) !important;
   }
@@ -286,6 +276,7 @@
 	</body>
 
 </html>
+
 
 
 
