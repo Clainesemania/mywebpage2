@@ -2982,23 +2982,13 @@ input, select, textarea {
 							margin-top: 0;
 						}
 
-	}
-
-/* Decorative images smooth fade only */
-.image.featured {
-    transition: opacity 0.4s ease;
+	/* Highlight box smooth hover */
+.highlight {
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
 }
 
-.image.featured:hover {
-    opacity: 0.7;   /* fades smoothly */
-}
-
-/* Buttons smooth fade only */
-.button.style1 {
-    transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-.button.style1:hover {
-    background-color: #d62828; /* darker red */
-    opacity: 0.85;             /* fade effect */
+.highlight:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* subtle background tint */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2); /* soft shadow */
+    opacity: 0.95;                          /* gentle fade */
 }
