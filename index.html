@@ -12,6 +12,117 @@
 
   <link rel="stylesheet" href="assets/css/main.css" />
   <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
+		<style>
+  #header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    animation: gradientShift 8s ease infinite;
+    background-size: 200% 200%;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  #logo:hover {
+    transform: scale(1.05) translateY(-5px);
+  }
+  
+  .highlight {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    transition: all 0.4s ease;
+  }
+  
+  .highlight:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  
+  .image.featured {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .image.featured img {
+    transition: all 0.5s ease;
+  }
+  
+  .image.featured:hover img {
+    transform: scale(1.15);
+    filter: brightness(0.7);
+  }
+  
+  .image.featured::after {
+    content: '👁️ View';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 10;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  }
+  
+  .image.featured:hover::after {
+    opacity: 1;
+  }
+  
+  .button.style1 {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white !important;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+  }
+  
+  .button.style1:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+  
+  .button.style1::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+  
+  .button.style1:hover::after {
+    left: 100%;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  .icon.solid {
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .feature-list section:hover .icon.solid {
+    transform: rotate(360deg) scale(1.2);
+    color: #667eea;
+  }
+		</style>
 	</head>
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
@@ -204,10 +315,47 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+		<script>
+  document.querySelectorAll('.button.style1').forEach(button => {
+    button.addEventListener('click', function(e) {
+      let ripple = document.createElement('span');
+      ripple.style.position = 'absolute';
+      ripple.style.borderRadius = '50%';
+      ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+      ripple.style.width = '100px';
+      ripple.style.height = '100px';
+      ripple.style.left = e.offsetX - 50 + 'px';
+      ripple.style.top = e.offsetY - 50 + 'px';
+      ripple.style.animation = 'ripple 0.6s ease-out';
+      ripple.style.pointerEvents = 'none';
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    const images = document.querySelectorAll('.image.featured img');
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    images.forEach(img => {
+      img.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+    });
+  });
+</script>
+
+<style>
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+</style>
 
 	</body>
 
 </html>
+
 
 
 
