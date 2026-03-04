@@ -206,23 +206,46 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 		<script>
-// Wait <script>
 // Wait for page to load
 window.addEventListener('load', function() {
   
-  // MOBILE-FRIENDLY IMAGE ZOOM
+  // FADE IN ON SCROLL - Elements appear as you scroll
+  const fadeElements = document.querySelectorAll('.highlight, .feature-list section, #intro .container p');
+  
+  // Set initial state - hidden
+  fadeElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  });
+  
+  // Fade in when visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.2 });
+  
+  fadeElements.forEach(el => observer.observe(el));
+  
+  // MOBILE-FRIENDLY IMAGE ZOOM with FADE
   const images = document.querySelectorAll('.image.featured img');
   images.forEach(img => {
-    img.style.transition = 'transform 0.5s ease';
+    img.style.transition = 'transform 0.5s ease, opacity 0.3s ease';
     
     const parent = img.parentElement;
     
     // For desktop (mouse)
     parent.addEventListener('mouseenter', function() {
       img.style.transform = 'scale(1.3)';
+      img.style.opacity = '0.8';
     });
     parent.addEventListener('mouseleave', function() {
       img.style.transform = 'scale(1)';
+      img.style.opacity = '1';
     });
     
     // For mobile (touch)
@@ -230,86 +253,93 @@ window.addEventListener('load', function() {
     parent.addEventListener('touchstart', function(e) {
       if (!isZoomed) {
         img.style.transform = 'scale(1.3)';
+        img.style.opacity = '0.8';
         isZoomed = true;
       } else {
         img.style.transform = 'scale(1)';
+        img.style.opacity = '1';
         isZoomed = false;
       }
     });
   });
   
-  // MOBILE-FRIENDLY BUTTON EFFECTS
+  // MOBILE-FRIENDLY BUTTON EFFECTS with FADE
   const buttons = document.querySelectorAll('.button.style1');
   buttons.forEach(btn => {
-    // Style buttons
     btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
     btn.style.color = 'white';
     btn.style.borderRadius = '30px';
     btn.style.padding = '12px 30px';
-    btn.style.transition = 'all 0.3s ease';
+    btn.style.transition = 'all 0.3s ease, opacity 0.3s ease';
     btn.style.transform = 'translateY(0)';
     btn.style.boxShadow = 'none';
+    btn.style.opacity = '1';
     
-    // Desktop hover
     btn.addEventListener('mouseenter', function() {
       this.style.transform = 'translateY(-5px)';
       this.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.6)';
+      this.style.opacity = '0.9';
     });
     btn.addEventListener('mouseleave', function() {
       this.style.transform = 'translateY(0)';
       this.style.boxShadow = 'none';
+      this.style.opacity = '1';
     });
     
-    // Mobile touch - animate on tap
     btn.addEventListener('touchstart', function(e) {
       this.style.transform = 'translateY(-5px)';
       this.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.6)';
+      this.style.opacity = '0.9';
     });
     btn.addEventListener('touchend', function(e) {
       setTimeout(() => {
         this.style.transform = 'translateY(0)';
         this.style.boxShadow = 'none';
+        this.style.opacity = '1';
       }, 200);
     });
   });
   
-  // MOBILE-FRIENDLY CARD LIFT
+  // MOBILE-FRIENDLY CARD LIFT with FADE
   const highlights = document.querySelectorAll('.highlight');
   highlights.forEach(card => {
-    card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+    card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease';
     card.style.transform = 'translateY(0)';
     
-    // Desktop
     card.addEventListener('mouseenter', function() {
       this.style.transform = 'translateY(-15px)';
       this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
+      this.style.opacity = '0.95';
     });
     card.addEventListener('mouseleave', function() {
       this.style.transform = 'translateY(0)';
       this.style.boxShadow = '';
+      this.style.opacity = '1';
     });
     
-    // Mobile - tap to lift
     let isLifted = false;
     card.addEventListener('touchstart', function(e) {
       if (!isLifted) {
         this.style.transform = 'translateY(-15px)';
         this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
+        this.style.opacity = '0.95';
         isLifted = true;
       } else {
         this.style.transform = 'translateY(0)';
         this.style.boxShadow = '';
+        this.style.opacity = '1';
         isLifted = false;
       }
     });
   });
   
-  console.log('✅ Animations loaded! Tap images/cards to see effects!');
+  console.log('✅ Fade animations loaded!');
 });
 </script>
 		
 	</body>
 </html>
+
 
 
 
