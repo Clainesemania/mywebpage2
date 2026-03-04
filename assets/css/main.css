@@ -2986,20 +2986,22 @@ input, select, textarea {
 
 /* Decorative images smooth hover */
 .image.featured {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
 }
 
 .image.featured:hover {
-  transform: scale(1.05);   /* zoom in slightly */
-  opacity: 0.9;             /* fade a little */
+    transform: scale(1.02);   /* subtle zoom */
+    opacity: 0.9;             /* gentle fade */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25); /* soft shadow */
 }
 
 /* Buttons smooth hover */
 .button.style1 {
-  transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
 .button.style1:hover {
-  background-color: #d62828; /* darker red */
-  transform: translateY(-3px); /* lift up slightly */
+    background-color: #d62828; /* darker red */
+    transform: translateY(-2px); /* subtle lift */
+    opacity: 0.9;               /* smooth fade */
 }
