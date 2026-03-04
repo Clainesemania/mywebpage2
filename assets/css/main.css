@@ -2983,3 +2983,23 @@ input, select, textarea {
 						}
 
 	}
+
+/* Decorative images smooth hover */
+.image.featured {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.image.featured:hover {
+  transform: scale(1.05);   /* zoom in slightly */
+  opacity: 0.9;             /* fade a little */
+}
+
+/* Buttons smooth hover */
+.button.style1 {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button.style1:hover {
+  background-color: #d62828; /* darker red */
+  transform: translateY(-3px); /* lift up slightly */
+}
