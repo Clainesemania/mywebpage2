@@ -2,10 +2,14 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Claine | Portfolio</title>
+<title>Claine Portfolio</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -16,13 +20,37 @@ margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:'Inter',sans-serif;
-scroll-behavior:smooth;
+}
+
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--text:white;
+--accent:#38bdf8;
+}
+
+.light{
+--bg:#f1f5f9;
+--card:white;
+--text:#111;
+--accent:#2563eb;
 }
 
 body{
-background:#0f172a;
-color:white;
+background:var(--bg);
+color:var(--text);
 overflow-x:hidden;
+}
+
+/* PARTICLES BACKGROUND */
+
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
 }
 
 /* MENU BUTTON */
@@ -31,14 +59,29 @@ overflow-x:hidden;
 position:fixed;
 top:15px;
 left:15px;
-font-size:24px;
-background:#020617;
-color:white;
+background:var(--card);
 border:none;
+color:var(--text);
+font-size:20px;
 padding:8px 12px;
 border-radius:6px;
 cursor:pointer;
 z-index:1001;
+}
+
+/* DARK MODE BUTTON */
+
+.theme-btn{
+position:fixed;
+top:15px;
+right:15px;
+background:var(--card);
+border:none;
+color:var(--text);
+font-size:18px;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
 }
 
 /* SIDEBAR */
@@ -49,11 +92,10 @@ top:0;
 left:-240px;
 width:240px;
 height:100%;
-background:#020617;
+background:var(--card);
 padding-top:70px;
 transition:0.25s;
 z-index:1000;
-box-shadow:5px 0 20px rgba(0,0,0,0.4);
 }
 
 .sidebar.active{
@@ -65,56 +107,73 @@ text-align:center;
 margin-bottom:30px;
 }
 
+/* SIDEBAR LINKS */
+
 .sidebar a{
-display:block;
+display:flex;
+align-items:center;
+gap:12px;
 padding:15px 25px;
-color:#94a3b8;
 text-decoration:none;
+color:var(--text);
+cursor:pointer;
 transition:0.2s;
 }
 
-.sidebar a:hover{
-background:#1e293b;
-color:#38bdf8;
+.sidebar a i{
+transition:0.25s;
+}
+
+.sidebar a:hover i{
+transform:translateX(6px) scale(1.1);
+color:var(--accent);
+}
+
+.sidebar a.active{
+background:rgba(56,189,248,0.15);
+color:var(--accent);
 }
 
 /* MAIN */
 
 .main{
-padding-left:20px;
-}
-
-/* HEADER */
-
-header{
-height:90vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-}
-
-header h1{
-font-size:48px;
-}
-
-.tagline{
-margin-top:10px;
-color:#94a3b8;
-}
-
-/* SECTIONS */
-
-section{
 padding:70px 8%;
 }
 
-.section-title{
-font-size:26px;
-margin-bottom:30px;
-border-left:4px solid #38bdf8;
+/* PAGES */
+
+.page{
+display:none;
+animation:fade .3s;
+}
+
+.page.active{
+display:block;
+}
+
+@keyframes fade{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* PROFILE */
+
+.profile{
+text-align:center;
+}
+
+.profile img{
+width:120px;
+border-radius:50%;
+margin-bottom:15px;
+}
+
+/* TITLES */
+
+.title{
+font-size:28px;
+margin-bottom:25px;
+border-left:4px solid var(--accent);
 padding-left:10px;
 }
 
@@ -126,17 +185,13 @@ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
-/* CARD */
+/* CARDS */
 
 .card{
-background:#1e293b;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(8px);
 padding:20px;
-border-radius:10px;
-transition:0.2s;
-}
-
-.card:hover{
-transform:translateY(-4px);
+border-radius:12px;
 }
 
 /* PROJECT */
@@ -153,28 +208,37 @@ margin-bottom:10px;
 display:inline-block;
 margin-top:10px;
 padding:8px 14px;
-background:#38bdf8;
+background:var(--accent);
 color:black;
-border-radius:5px;
+border-radius:6px;
 text-decoration:none;
 font-weight:600;
 }
 
-/* FOOTER */
+/* SKILLS */
 
-footer{
-text-align:center;
-padding:40px;
-color:#94a3b8;
-border-top:1px solid #1e293b;
+.skill{
+margin-bottom:15px;
+}
+
+.bar{
+height:8px;
+background:#1e293b;
+border-radius:5px;
+overflow:hidden;
+}
+
+.progress{
+height:100%;
+background:var(--accent);
 }
 
 /* MOBILE */
 
 @media(max-width:768px){
 
-header h1{
-font-size:36px;
+.main{
+padding:80px 6%;
 }
 
 }
@@ -185,7 +249,15 @@ font-size:36px;
 
 <body>
 
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<canvas id="particles"></canvas>
+
+<button class="menu-btn" onclick="toggleMenu()">
+<i class="fa-solid fa-bars"></i>
+</button>
+
+<button class="theme-btn" onclick="toggleTheme()">
+<i class="fa-solid fa-moon"></i>
+</button>
 
 <!-- SIDEBAR -->
 
@@ -193,11 +265,30 @@ font-size:36px;
 
 <h2>Claine</h2>
 
-<a href="#home">Claine</a>
-<a href="#about">About Me</a>
-<a href="#gdevelop">GDevelop</a>
-<a href="#youtube">YouTube</a>
-<a href="#github">GitHub</a>
+<a onclick="showPage('home',this)" class="active">
+<i class="fa-solid fa-house"></i>
+<span>Claine</span>
+</a>
+
+<a onclick="showPage('about',this)">
+<i class="fa-solid fa-user"></i>
+<span>About Me</span>
+</a>
+
+<a onclick="showPage('gdevelop',this)">
+<i class="fa-solid fa-gamepad"></i>
+<span>GDevelop</span>
+</a>
+
+<a onclick="showPage('youtube',this)">
+<i class="fa-brands fa-youtube"></i>
+<span>YouTube</span>
+</a>
+
+<a onclick="showPage('github',this)">
+<i class="fa-brands fa-github"></i>
+<span>GitHub</span>
+</a>
 
 </div>
 
@@ -205,40 +296,66 @@ font-size:36px;
 
 <!-- HOME -->
 
-<header id="home">
+<div id="home" class="page active">
+
+<div class="profile">
+
+<img src="images/profile.jpg">
 
 <h1 id="typing"></h1>
-<p class="tagline">Hi, welcome to my website</p>
 
-</header>
+<p>Hi, welcome to my website</p>
+
+</div>
+
+</div>
 
 <!-- ABOUT -->
 
-<section id="about">
+<div id="about" class="page">
 
-<h2 class="section-title">About Me 😉</h2>
+<h2 class="title">About Me</h2>
 
 <div class="grid">
 
 <div class="card">
-<h3>⭐ Hobby</h3>
+<h3>Hobby</h3>
 <p>Gaming, Reading, Music</p>
 </div>
 
 <div class="card">
-<h3>⭐ Future Plans</h3>
-<p>Graduate and find a job to support my family.</p>
+<h3>Future Plans</h3>
+<p>Graduate and support my family.</p>
 </div>
 
 </div>
 
-</section>
+<br>
+
+<h2 class="title">Skills</h2>
+
+<div class="skill">
+HTML
+<div class="bar"><div class="progress" style="width:70%"></div></div>
+</div>
+
+<div class="skill">
+CSS
+<div class="bar"><div class="progress" style="width:60%"></div></div>
+</div>
+
+<div class="skill">
+Game Development
+<div class="bar"><div class="progress" style="width:65%"></div></div>
+</div>
+
+</div>
 
 <!-- GDEVELOP -->
 
-<section id="gdevelop">
+<div id="gdevelop" class="page">
 
-<h2 class="section-title">GDevelop</h2>
+<h2 class="title">GDevelop</h2>
 
 <div class="grid">
 
@@ -248,7 +365,7 @@ font-size:36px;
 
 <h3>My Game</h3>
 
-<p>Check out the game I created using GDevelop.</p>
+<p>Check out my GDevelop game.</p>
 
 <a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">Play</a>
 
@@ -256,13 +373,13 @@ font-size:36px;
 
 </div>
 
-</section>
+</div>
 
 <!-- YOUTUBE -->
 
-<section id="youtube">
+<div id="youtube" class="page">
 
-<h2 class="section-title">YouTube</h2>
+<h2 class="title">YouTube</h2>
 
 <div class="grid">
 
@@ -274,19 +391,19 @@ font-size:36px;
 
 <p>Watch my simple gaming content.</p>
 
-<a href="https://youtube.com/@hotdogpandesal-gaming?si=mxgZnGF4sPheFv-Z" target="_blank" class="btn">Watch</a>
+<a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="btn">Watch</a>
 
 </div>
 
 </div>
 
-</section>
+</div>
 
 <!-- GITHUB -->
 
-<section id="github">
+<div id="github" class="page">
 
-<h2 class="section-title">GitHub</h2>
+<h2 class="title">GitHub</h2>
 
 <div class="grid">
 
@@ -304,44 +421,105 @@ font-size:36px;
 
 </div>
 
-</section>
-
-<footer>
-
-<p>Still Improving </p>
-
-</footer>
+</div>
 
 </div>
 
 <script>
 
-/* SIDEBAR TOGGLE */
+/* SIDEBAR */
 
 function toggleMenu(){
-document.getElementById("sidebar").classList.toggle("active");
+document.getElementById("sidebar").classList.toggle("active")
 }
 
-/* TYPING EFFECT */
+/* PAGE SWITCH */
 
-const text = "Claine";
-let i = 0;
+function showPage(page,element){
+
+document.querySelectorAll(".page").forEach(p=>{
+p.classList.remove("active")
+})
+
+document.getElementById(page).classList.add("active")
+
+document.querySelectorAll(".sidebar a").forEach(link=>{
+link.classList.remove("active")
+})
+
+element.classList.add("active")
+
+document.getElementById("sidebar").classList.remove("active")
+
+}
+
+/* DARK MODE */
+
+function toggleTheme(){
+document.body.classList.toggle("light")
+}
+
+/* TYPING */
+
+const text="Claine";
+let i=0;
 
 function typing(){
 
-if(i < text.length){
-
-document.getElementById("typing").innerHTML += text.charAt(i);
-
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i);
 i++;
-
 setTimeout(typing,120);
-
 }
 
 }
 
 typing();
+
+/* PARTICLES */
+
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+for(let i=0;i<60;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2,
+d:Math.random()*1
+})
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="white"
+
+particles.forEach(p=>{
+
+ctx.beginPath()
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+ctx.fill()
+
+p.y+=p.d
+
+if(p.y>canvas.height){
+p.y=0
+}
+
+})
+
+requestAnimationFrame(draw)
+
+}
+
+draw()
 
 </script>
 
