@@ -1,241 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claine | Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #08080a;
-            --sidebar-bg: rgba(18, 18, 22, 0.95);
-            --accent: #8b5cf6; 
-            --accent-soft: rgba(139, 92, 246, 0.1);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+<title>Claine | Portfolio</title>
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            overflow: hidden; 
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* --- AMBIENT GLOW --- */
-        .glow-system {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            filter: blur(120px);
-            opacity: 0.3;
-        }
-        .orb {
-            position: absolute;
-            width: 40vw;
-            height: 40vw;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: move 25s infinite alternate;
-        }
-        .orb-1 { top: -10%; left: -10%; }
-        .orb-2 { bottom: -10%; right: -10%; background: #3b82f6; animation-delay: -5s; }
+<style>
 
-        @keyframes move {
-            from { transform: translate(0, 0) scale(1); }
-            to { transform: translate(100px, 50px) scale(1.1); }
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+scroll-behavior:smooth;
+}
 
-        /* --- SIDEBAR --- */
-        nav {
-            width: 80px;
-            height: 100vh;
-            background: var(--sidebar-bg);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 40px 0;
-            transition: width 0.3s var(--transition);
-            z-index: 100;
-        }
-        nav:hover { width: 260px; }
+body{
+background:#0f172a;
+color:white;
+overflow-x:hidden;
+}
 
-        .nav-item {
-            width: 100%;
-            padding: 18px 28px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-        }
-        .nav-item svg { min-width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-        .nav-item span { opacity: 0; transition: 0.2s; font-weight: 500; letter-spacing: 0.5px; }
-        nav:hover .nav-item span { opacity: 1; }
-        .nav-item:hover { color: var(--text-main); background: var(--accent-soft); }
+/* MENU BUTTON */
 
-        /* --- MAIN SECTIONS --- */
-        main { flex-grow: 1; position: relative; }
+.menu-btn{
+position:fixed;
+top:15px;
+left:15px;
+font-size:24px;
+background:#020617;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+z-index:1001;
+}
 
-        section {
-            position: absolute;
-            inset: 0;
-            padding: 5% 10%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(40px) scale(0.95);
-            transition: var(--transition);
-        }
+/* SIDEBAR */
 
-        /* Hover logic to "Swap" sections */
-        body:not(:has(.nav-item:hover)) #sec-claine,
-        body:has(.link-1:hover) #sec-claine,
-        body:has(.link-2:hover) #sec-about,
-        body:has(.link-3:hover) #sec-gdevelop,
-        body:has(.link-4:hover) #sec-youtube,
-        body:has(.link-5:hover) #sec-github,
-        body:has(.link-6:hover) #sec-connect {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
+.sidebar{
+position:fixed;
+top:0;
+left:-240px;
+width:240px;
+height:100%;
+background:#020617;
+padding-top:70px;
+transition:0.25s;
+z-index:1000;
+box-shadow:5px 0 20px rgba(0,0,0,0.4);
+}
 
-        /* --- TYPOGRAPHY --- */
-        h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 900; line-height: 1; margin-bottom: 15px; letter-spacing: -3px; }
-        h2 { font-size: 2.5rem; margin-bottom: 30px; font-weight: 700; }
-        .accent { color: var(--accent); }
-        p { color: var(--text-muted); line-height: 1.6; max-width: 600px; font-size: 1.1rem; }
+.sidebar.active{
+left:0;
+}
 
-        /* --- INTERACTIVE CARDS --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            padding: 30px;
-            border-radius: 20px;
-            transition: 0.4s var(--transition);
-            text-decoration: none;
-            color: inherit;
-        }
-        .card:hover { border-color: var(--accent); transform: translateY(-10px); background: var(--accent-soft); }
-        .card h4 { color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar h2{
+text-align:center;
+margin-bottom:30px;
+}
 
-        .btn {
-            background: var(--accent);
-            color: white;
-            padding: 16px 35px;
-            border-radius: 12px;
-            font-weight: 600;
-            display: inline-block;
-            text-decoration: none;
-            margin-top: 25px;
-            transition: 0.3s;
-            width: fit-content;
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px var(--accent-glow); }
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:#94a3b8;
+text-decoration:none;
+transition:0.2s;
+}
 
-    </style>
+.sidebar a:hover{
+background:#1e293b;
+color:#38bdf8;
+}
+
+/* MAIN */
+
+.main{
+padding-left:20px;
+}
+
+/* HEADER */
+
+header{
+height:90vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+header h1{
+font-size:48px;
+}
+
+.tagline{
+margin-top:10px;
+color:#94a3b8;
+}
+
+/* SECTIONS */
+
+section{
+padding:70px 8%;
+}
+
+.section-title{
+font-size:26px;
+margin-bottom:30px;
+border-left:4px solid #38bdf8;
+padding-left:10px;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+/* CARD */
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+/* PROJECT */
+
+.project img{
+width:100%;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+/* BUTTON */
+
+.btn{
+display:inline-block;
+margin-top:10px;
+padding:8px 14px;
+background:#38bdf8;
+color:black;
+border-radius:5px;
+text-decoration:none;
+font-weight:600;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:40px;
+color:#94a3b8;
+border-top:1px solid #1e293b;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+header h1{
+font-size:36px;
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <div class="glow-system">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-    <nav>
-        <div class="nav-item link-1">
-            <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <span>Claine</span>
-        </div>
-        <div class="nav-item link-2">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
-            <span>About</span>
-        </div>
-        <div class="nav-item link-3">
-            <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-3h.01m2.99 2h.01"/></svg>
-            <span>GDevelop</span>
-        </div>
-        <div class="nav-item link-4">
-            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-            <span>YouTube</span>
-        </div>
-        <div class="nav-item link-5">
-            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            <span>GitHub</span>
-        </div>
-        <div class="nav-item link-6" style="margin-top: auto;">
-            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span>Connect</span>
-        </div>
-    </nav>
+<!-- SIDEBAR -->
 
-    <main>
-        <section id="sec-claine">
-            <h1>CLAINE<span class="accent">.</span></h1>
-            <p>Student Web Developer specializing in immersive digital interfaces and interactive software logic.</p>
-        </section>
+<div class="sidebar" id="sidebar">
 
-        <section id="sec-about">
-            <h2>The <span class="accent">Objective</span></h2>
-            <div class="grid">
-                <div class="card">
-                    <h4>Vision</h4>
-                    <p>Merging game design principles with web technology to create engaging user experiences.</p>
-                </div>
-                <div class="card">
-                    <h4>Experience</h4>
-                    <p>Focused on CSS architecture, GDevelop logic, and clean code documentation.</p>
-                </div>
-            </div>
-        </section>
+<h2>Claine</h2>
 
-        <section id="sec-gdevelop">
-            <h2>G<span class="accent">Develop</span></h2>
-            <p>Interactive game logic and deployment. Experience in creating cross-platform browser games.</p>
-            <a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">View Interactive Build</a>
-        </section>
+<a href="#home">Claine</a>
+<a href="#about">About Me</a>
+<a href="#gdevelop">GDevelop</a>
+<a href="#youtube">YouTube</a>
+<a href="#github">GitHub</a>
 
-        <section id="sec-youtube">
-            <h2>You<span class="accent">Tube</span></h2>
-            <p>Content creation focusing on gaming mechanics and community engagement.</p>
-            <a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="btn">Explore Channel</a>
-        </section>
+</div>
 
-        <section id="sec-github">
-            <h2>Git<span class="accent">Hub</span></h2>
-            <p>Repository management and open-source contributions. Tracking my growth through code.</p>
-            <a href="https://github.com/Clainesemania" target="_blank" class="btn">Open Repositories</a>
-        </section>
+<div class="main">
 
-        <section id="sec-connect">
-            <h2>Digital <span class="accent">Presence</span></h2>
-            <p>Select a platform to interact with my professional and creative work.</p>
-            <div class="grid">
-                <a href="https://github.com/Clainesemania" target="_blank" class="card">
-                    <h4>Source Code</h4>
-                    <p>View my latest commits and projects on GitHub.</p>
-                </a>
-                <a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="card">
-                    <h4>Content</h4>
-                    <p>Watch my gaming and development videos on YouTube.</p>
-                </a>
-            </div>
-        </section>
-    </main>
+<!-- HOME -->
+
+<header id="home">
+
+<h1 id="typing"></h1>
+<p class="tagline">Hi, welcome to my website</p>
+
+</header>
+
+<!-- ABOUT -->
+
+<section id="about">
+
+<h2 class="section-title">About Me 😉</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>⭐ Hobby</h3>
+<p>Gaming, Reading, Music</p>
+</div>
+
+<div class="card">
+<h3>⭐ Future Plans</h3>
+<p>Graduate and find a job to support my family.</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- GDEVELOP -->
+
+<section id="gdevelop">
+
+<h2 class="section-title">GDevelop</h2>
+
+<div class="grid">
+
+<div class="card project">
+
+<img src="images/pic02.jpg">
+
+<h3>My Game</h3>
+
+<p>Check out the game I created using GDevelop.</p>
+
+<a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">Play</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- YOUTUBE -->
+
+<section id="youtube">
+
+<h2 class="section-title">YouTube</h2>
+
+<div class="grid">
+
+<div class="card project">
+
+<img src="images/pic03.jpg">
+
+<h3>Gaming Channel</h3>
+
+<p>Watch my simple gaming content.</p>
+
+<a href="https://youtube.com/@hotdogpandesal-gaming?si=mxgZnGF4sPheFv-Z" target="_blank" class="btn">Watch</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- GITHUB -->
+
+<section id="github">
+
+<h2 class="section-title">GitHub</h2>
+
+<div class="grid">
+
+<div class="card project">
+
+<img src="images/pic04.jpg">
+
+<h3>My GitHub</h3>
+
+<p>View my code and projects.</p>
+
+<a href="https://github.com/Clainesemania" target="_blank" class="btn">View</a>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<p>Still Improving </p>
+
+</footer>
+
+</div>
+
+<script>
+
+/* SIDEBAR TOGGLE */
+
+function toggleMenu(){
+document.getElementById("sidebar").classList.toggle("active");
+}
+
+/* TYPING EFFECT */
+
+const text = "Claine";
+let i = 0;
+
+function typing(){
+
+if(i < text.length){
+
+document.getElementById("typing").innerHTML += text.charAt(i);
+
+i++;
+
+setTimeout(typing,120);
+
+}
+
+}
+
+typing();
+
+</script>
 
 </body>
 </html>
