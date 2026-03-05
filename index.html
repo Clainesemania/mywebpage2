@@ -3,231 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claine | Interactive Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Claine | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --accent: #00f2ff;
-            --card-bg: #111111;
-            --text-dim: #888;
-            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --bg: #08080a;
+            --sidebar-bg: rgba(18, 18, 22, 0.95);
+            --accent: #8b5cf6; 
+            --accent-soft: rgba(139, 92, 246, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
-            color: white;
-            overflow: hidden; /* Prevents scrolling so we can use the hover transition */
+            color: var(--text-main);
             height: 100vh;
             display: flex;
+            overflow: hidden; 
         }
 
-        /* --- SIDE NAVIGATION --- */
+        /* --- AMBIENT GLOW --- */
+        .glow-system {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            filter: blur(120px);
+            opacity: 0.3;
+        }
+        .orb {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: move 25s infinite alternate;
+        }
+        .orb-1 { top: -10%; left: -10%; }
+        .orb-2 { bottom: -10%; right: -10%; background: #3b82f6; animation-delay: -5s; }
+
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 50px) scale(1.1); }
+        }
+
+        /* --- SIDEBAR --- */
         nav {
-            width: 250px;
+            width: 80px;
             height: 100vh;
-            border-right: 1px solid #222;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-            z-index: 10;
-            background: var(--bg);
+            padding: 40px 0;
+            transition: width 0.3s var(--transition);
+            z-index: 100;
         }
+        nav:hover { width: 260px; }
 
         .nav-item {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dim);
-            margin: 15px 0;
-            cursor: pointer;
-            transition: var(--transition);
+            width: 100%;
+            padding: 18px 28px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
         }
+        .nav-item svg { min-width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+        .nav-item span { opacity: 0; transition: 0.2s; font-weight: 500; letter-spacing: 0.5px; }
+        nav:hover .nav-item span { opacity: 1; }
+        .nav-item:hover { color: var(--text-main); background: var(--accent-soft); }
 
-        .nav-item:hover {
-            color: var(--accent);
-            transform: translateX(10px);
-        }
-
-        /* --- MAIN CONTENT AREA --- */
-        .viewport {
-            flex-grow: 1;
-            position: relative;
-            height: 100vh;
-        }
+        /* --- MAIN SECTIONS --- */
+        main { flex-grow: 1; position: relative; }
 
         section {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 60px;
+            inset: 0;
+            padding: 5% 10%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
+            visibility: hidden;
+            transform: translateY(40px) scale(0.95);
             transition: var(--transition);
         }
 
-        /* --- HOVER LOGIC --- 
-           When we hover the nav item, show the target section
-        */
-        body:has(.link-claine:hover) #intro,
-        body:has(.link-about:hover) #about,
-        body:has(.link-socials:hover) #projects {
+        /* Hover logic to "Swap" sections */
+        body:not(:has(.nav-item:hover)) #sec-claine,
+        body:has(.link-1:hover) #sec-claine,
+        body:has(.link-2:hover) #sec-about,
+        body:has(.link-3:hover) #sec-gdevelop,
+        body:has(.link-4:hover) #sec-youtube,
+        body:has(.link-5:hover) #sec-github,
+        body:has(.link-6:hover) #sec-connect {
             opacity: 1;
-            transform: translateY(0);
-            pointer-events: all;
+            visibility: visible;
+            transform: translateY(0) scale(1);
         }
 
-        /* Default state: Show Claine section if nothing is hovered */
-        body:not(:has(.nav-item:hover)) #intro {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* --- TYPOGRAPHY --- */
+        h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 900; line-height: 1; margin-bottom: 15px; letter-spacing: -3px; }
+        h2 { font-size: 2.5rem; margin-bottom: 30px; font-weight: 700; }
+        .accent { color: var(--accent); }
+        p { color: var(--text-muted); line-height: 1.6; max-width: 600px; font-size: 1.1rem; }
 
-        /* --- ELEMENTS --- */
-        h1 { font-size: 5rem; font-weight: 800; letter-spacing: -2px; }
-        .accent-text { color: var(--accent); }
+        /* --- INTERACTIVE CARDS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
         
-        .about-grid, .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
         .card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
             padding: 30px;
             border-radius: 20px;
-            border: 1px solid #222;
-            transition: var(--transition);
+            transition: 0.4s var(--transition);
+            text-decoration: none;
+            color: inherit;
         }
-
-        .card:hover { border-color: var(--accent); background: #161616; }
-
-        .icon-box {
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 242, 255, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .project-card {
-            overflow: hidden;
-            padding: 0;
-        }
-
-        .project-img {
-            width: 100%;
-            height: 150px;
-            background: #222;
-            object-fit: cover;
-        }
-
-        .project-info { padding: 20px; }
+        .card:hover { border-color: var(--accent); transform: translateY(-10px); background: var(--accent-soft); }
+        .card h4 { color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
         .btn {
-            display: inline-block;
-            margin-top: 15px;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.9rem;
+            background: var(--accent);
+            color: white;
+            padding: 16px 35px;
+            border-radius: 12px;
             font-weight: 600;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: 0.3s;
+            width: fit-content;
         }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px var(--accent-glow); }
 
-        footer {
-            margin-top: auto;
-            font-size: 0.8rem;
-            color: #444;
-        }
-
-        /* Simple SVG Style */
-        svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     </style>
 </head>
 <body>
 
+    <div class="glow-system">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
     <nav>
-        <div class="nav-item link-claine">01. Claine</div>
-        <div class="nav-item link-about">02. About Me</div>
-        <div class="nav-item link-socials">03. Socials</div>
-        <footer>Still Improving</footer>
+        <div class="nav-item link-1">
+            <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span>Claine</span>
+        </div>
+        <div class="nav-item link-2">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+            <span>About</span>
+        </div>
+        <div class="nav-item link-3">
+            <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-3h.01m2.99 2h.01"/></svg>
+            <span>GDevelop</span>
+        </div>
+        <div class="nav-item link-4">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            <span>YouTube</span>
+        </div>
+        <div class="nav-item link-5">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span>GitHub</span>
+        </div>
+        <div class="nav-item link-6" style="margin-top: auto;">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Connect</span>
+        </div>
     </nav>
 
-    <div class="viewport">
-        
-        <section id="intro">
-            <p class="accent-text">Hello, World</p>
-            <h1>I'm Claine.</h1>
-            <p style="color: var(--text-dim); font-size: 1.2rem; max-width: 500px;">
-                A student web developer crafting digital experiences and exploring the future of the web.
-            </p>
+    <main>
+        <section id="sec-claine">
+            <h1>CLAINE<span class="accent">.</span></h1>
+            <p>Student Web Developer specializing in immersive digital interfaces and interactive software logic.</p>
         </section>
 
-        <section id="about">
-            <h2 class="accent-text">About Me</h2>
-            <div class="about-grid">
+        <section id="sec-about">
+            <h2>The <span class="accent">Objective</span></h2>
+            <div class="grid">
                 <div class="card">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 11h.01M18 13h.01"/></svg>
-                    </div>
-                    <h3>Hobbies</h3>
-                    <p style="color: var(--text-dim)">Gaming, Reading, and Music production.</p>
+                    <h4>Vision</h4>
+                    <p>Merging game design principles with web technology to create engaging user experiences.</p>
                 </div>
                 <div class="card">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3l-2 8Z"/><path d="M15 12v5c0 1.45-1.8 3.38-4 5-1.2 1.63-3 2-3 2l8-2Z"/><path d="M15 9h5"/></svg>
-                    </div>
-                    <h3>Future Plans</h3>
-                    <p style="color: var(--text-dim)">To graduate and build a career that supports my family.</p>
+                    <h4>Experience</h4>
+                    <p>Focused on CSS architecture, GDevelop logic, and clean code documentation.</p>
                 </div>
             </div>
         </section>
 
-        <section id="projects">
-            <h2 class="accent-text">Projects & Socials</h2>
-            <div class="projects-grid">
-                <div class="card project-card">
-                    <img src="images/pic02.jpg" class="project-img" alt="GDevelop">
-                    <div class="project-info">
-                        <h4>GDevelop</h4>
-                        <a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">View Project →</a>
-                    </div>
-                </div>
-                <div class="card project-card">
-                    <img src="images/pic03.jpg" class="project-img" alt="YouTube">
-                    <div class="project-info">
-                        <h4>YouTube</h4>
-                        <a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="btn">Watch Channel →</a>
-                    </div>
-                </div>
-                <div class="card project-card">
-                    <img src="images/pic04.jpg" class="project-img" alt="GitHub">
-                    <div class="project-info">
-                        <h4>GitHub</h4>
-                        <a href="https://github.com/Clainesemania" target="_blank" class="btn">Code Repo →</a>
-                    </div>
-                </div>
-            </div>
+        <section id="sec-gdevelop">
+            <h2>G<span class="accent">Develop</span></h2>
+            <p>Interactive game logic and deployment. Experience in creating cross-platform browser games.</p>
+            <a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">View Interactive Build</a>
         </section>
 
-    </div>
+        <section id="sec-youtube">
+            <h2>You<span class="accent">Tube</span></h2>
+            <p>Content creation focusing on gaming mechanics and community engagement.</p>
+            <a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="btn">Explore Channel</a>
+        </section>
+
+        <section id="sec-github">
+            <h2>Git<span class="accent">Hub</span></h2>
+            <p>Repository management and open-source contributions. Tracking my growth through code.</p>
+            <a href="https://github.com/Clainesemania" target="_blank" class="btn">Open Repositories</a>
+        </section>
+
+        <section id="sec-connect">
+            <h2>Digital <span class="accent">Presence</span></h2>
+            <p>Select a platform to interact with my professional and creative work.</p>
+            <div class="grid">
+                <a href="https://github.com/Clainesemania" target="_blank" class="card">
+                    <h4>Source Code</h4>
+                    <p>View my latest commits and projects on GitHub.</p>
+                </a>
+                <a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="card">
+                    <h4>Content</h4>
+                    <p>Watch my gaming and development videos on YouTube.</p>
+                </a>
+            </div>
+        </section>
+    </main>
 
 </body>
 </html>
