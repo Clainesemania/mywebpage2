@@ -3,360 +3,260 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claine | Portfolio</title>
+  <title>Claine | Galaxy Portfolio</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* --- Base Variables & Reset --- */
     :root {
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
-      --card-bg: rgba(30, 41, 59, 0.7); /* Slightly transparent for the animated background */
-      --nav-bg: rgba(15, 23, 42, 0.6);
+      --bg-deep: #000000;
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      --accent: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.03);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* --- Animated Background --- */
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text-main);
-      overflow-x: hidden;
-      /* The moving gradient background */
-      background: linear-gradient(-45deg, #0f172a, #1e293b, #082f49, #172554);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
+      background-color: var(--bg-deep);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* --- GALAXY LAYERS --- */
+    .galaxy-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
     }
 
-    h1, h2, h3 {
-      font-family: 'Poppins', sans-serif;
+    .star-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: transparent;
     }
 
-    /* --- Navigation with Icons --- */
+    /* Generating stars using box-shadow for performance */
+    .stars-small { width: 1px; height: 1px; box-shadow: 454px 104px #FFF , 184px 304px #FFF; animation: starsAnim 50s linear infinite; }
+    .stars-med { width: 2px; height: 2px; box-shadow: 120px 40px #FFF , 900px 500px #FFF; animation: starsAnim 100s linear infinite; }
+
+    @keyframes starsAnim {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-2000px); }
+    }
+
+    /* Shooting Star */
+    .shooting-star {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 2px; height: 2px;
+      background: white;
+      opacity: 0;
+      animation: shoot 10s linear infinite;
+    }
+
+    @keyframes shoot {
+      0% { transform: translateX(0) translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      20% { transform: translateX(-500px) translateY(500px); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* --- TYPING ANIMATION --- */
+    .typing-text {
+      display: inline-block;
+      overflow: hidden;
+      border-right: 3px solid #fff;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .15em;
+      animation: typing 2s steps(10, end), blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: white; } }
+
+    /* --- NAVIGATION --- */
     nav {
       position: fixed;
-      top: 0;
-      width: 100%;
-      background: var(--nav-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      top: 0; width: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
       z-index: 100;
       padding: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 2rem; /* Spaced out for icons */
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      display: flex; justify-content: center; gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     .nav-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem; /* Icon size */
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy smooth transition */
-      padding: 0.8rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 1.4rem; cursor: pointer;
+      width: 50px; height: 50px; border-radius: 50%;
+      transition: 0.4s; display: flex; align-items: center; justify-content: center;
     }
 
-    .nav-btn:hover {
-      color: var(--text-main);
-      transform: translateY(-5px) scale(1.15);
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
-    }
-
-    .nav-btn.active {
-      color: var(--accent);
-      background: rgba(56, 189, 248, 0.15);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    .nav-btn:hover, .nav-btn.active {
+      color: #fff; background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
       transform: scale(1.1);
     }
 
-    /* --- Section Container --- */
-    main {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-    }
+    /* --- SECTIONS --- */
+    main { position: relative; width: 100%; height: 100vh; }
 
     section {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      padding: 6rem 2rem 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      
-      /* Smooth Transitions between sections */
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(40px) scale(0.95);
-      transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      padding: 6rem 2rem; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      opacity: 0; visibility: hidden;
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     section.active-section {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-      z-index: 10;
+      opacity: 1; visibility: visible; transform: translateY(0) scale(1);
     }
 
-    /* --- Typography & Layout --- */
-    .title {
-      font-size: 3.5rem;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(to right, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    .section-title {
-      font-size: 2.5rem;
-      margin-bottom: 2.5rem;
-      color: var(--accent);
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-    }
-
-    /* --- Cards --- */
-    .grid {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      max-width: 900px;
-    }
-
+    /* --- CARDS & IMAGES --- */
     .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 2rem;
-      border-radius: 16px;
-      width: 300px;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 15px; width: 300px; overflow: hidden; transition: 0.4s;
     }
 
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      border-color: rgba(56, 189, 248, 0.3);
-    }
+    .card:hover { border-color: #fff; transform: translateY(-10px); }
 
-    .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: #fff;
+    .img-box { width: 100%; height: 180px; overflow: hidden; background: #000; }
+    .img-box img { 
+      width: 100%; height: 100%; object-fit: cover; 
+      filter: grayscale(100%); transition: 0.6s;
     }
+    .card:hover .img-box img { filter: grayscale(0%); transform: scale(1.1); }
 
-    /* --- Project Specifics & Interactive Images --- */
-    .project-card {
-      padding: 0;
-      overflow: hidden; /* Keeps the zoomed image inside the borders */
+    .title { font-family: 'Poppins'; font-size: 3rem; text-transform: uppercase; margin-bottom: 10px; }
+    .btn { 
+      margin-top: 15px; padding: 10px 25px; background: #fff; color: #000; 
+      text-decoration: none; border-radius: 30px; font-weight: 600; display: inline-block;
     }
+    .btn:hover { box-shadow: 0 0 20px #fff; }
 
-    .project-image {
-      width: 100%;
-      height: 200px;
-      overflow: hidden; /* Essential for the scale effect */
-      background-color: #000; /* Dark background in case images don't fill */
-    }
-
-    .project-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      /* Smooth transition for the zoom effect */
-      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
-    }
-
-    /* When the user interacts/hovers with the card, the image zooms and fits nicely */
-    .project-card:hover .project-image img {
-      transform: scale(1.15); /* Zooms the image in smoothly */
-      opacity: 0.9;
-    }
-
-    .project-content {
-      padding: 1.5rem;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.7rem 1.5rem;
-      background: var(--accent);
-      color: #000;
-      text-decoration: none;
-      font-weight: 600;
-      border-radius: 30px;
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #bae6fd;
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-    }
-
-    /* --- Responsive Design --- */
-    @media (max-width: 768px) {
-      .title { font-size: 2.5rem; }
-      nav { padding: 0.8rem; gap: 1rem; }
-      .nav-btn { font-size: 1.2rem; width: 40px; height: 40px; padding: 0.5rem; }
-    }
   </style>
 </head>
 <body>
 
-  <nav>
-    <button class="nav-btn active" onclick="switchSection('sec-intro', this)" title="Hello / Home">
-      <i class="fa-solid fa-house"></i>
-    </button>
-    <button class="nav-btn" onclick="switchSection('sec-about', this)" title="About Me">
-      <i class="fa-solid fa-user"></i>
-    </button>
-    <button class="nav-btn" onclick="switchSection('sec-gdevelop', this)" title="GDevelop Project">
-      <i class="fa-solid fa-gamepad"></i>
-    </button>
-    <button class="nav-btn" onclick="switchSection('sec-youtube', this)" title="YouTube Channel">
-      <i class="fa-brands fa-youtube"></i>
-    </button>
-    <button class="nav-btn" onclick="switchSection('sec-github', this)" title="GitHub Profile">
-      <i class="fa-brands fa-github"></i>
-    </button>
-    <button class="nav-btn" onclick="switchSection('sec-footer', this)" title="Still Improving">
-      <i class="fa-solid fa-arrow-trend-up"></i>
-    </button>
+  <div class="galaxy-container">
+    <div class="star-layer stars-small" id="stars1"></div>
+    <div class="star-layer stars-med" id="stars2"></div>
+    <div class="shooting-star"></div>
+  </div>
+
+  <nav id="navbar">
+    <button class="nav-btn active" onclick="switchSection('sec-1', this)"><i class="fa-solid fa-house"></i></button>
+    <button class="nav-btn" onclick="switchSection('sec-2', this)"><i class="fa-solid fa-user-astronaut"></i></button>
+    <button class="nav-btn" onclick="switchSection('sec-3', this)"><i class="fa-solid fa-gamepad"></i></button>
+    <button class="nav-btn" onclick="switchSection('sec-4', this)"><i class="fa-brands fa-youtube"></i></button>
+    <button class="nav-btn" onclick="switchSection('sec-5', this)"><i class="fa-brands fa-github"></i></button>
+    <button class="nav-btn" onclick="switchSection('sec-6', this)"><i class="fa-solid fa-bolt"></i></button>
   </nav>
 
   <main>
-    
-    <section id="sec-intro" class="active-section">
-      <h1 class="title">Claine</h1>
-      <p class="subtitle" style="color: var(--accent); font-weight: 500;">Hi, welcome to my website</p>
-      <div class="subtitle">
-        <p>My name is Claine.</p>
-        <p>I am a student learning web development.</p>
-        <p>This website is my personal portfolio.</p>
-      </div>
+    <section id="sec-1" class="active-section">
+      <h1 class="title"><span class="typing-text">CLAINE</span></h1>
+      <p style="color: #888;">Student & Web Developer</p>
     </section>
 
-    <section id="sec-about">
-      <h2 class="section-title">ABOUT ME 😉</h2>
-      <div class="grid">
-        <div class="card">
-          <h3><i class="fa-solid fa-star" style="color: var(--accent); margin-right: 8px;"></i> Hobbies</h3>
-          <p class="subtitle" style="margin-bottom: 0;">Gaming, Reading, Music</p>
+    <section id="sec-2">
+      <h2 class="title" style="font-size: 2rem;">About Me</h2>
+      <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
+        <div class="card" style="padding:20px;">
+          <h3>Hobbies</h3>
+          <p style="color:#888;">Gaming • Reading • Music</p>
         </div>
-        <div class="card">
-          <h3><i class="fa-solid fa-rocket" style="color: var(--accent); margin-right: 8px;"></i> Future Plans</h3>
-          <p class="subtitle" style="margin-bottom: 0;">Graduate and find a job to support my family.</p>
+        <div class="card" style="padding:20px;">
+          <h3>Goal</h3>
+          <p style="color:#888;">Graduate & Support my family</p>
         </div>
       </div>
     </section>
 
-    <section id="sec-gdevelop">
-      <h2 class="section-title">GDevelop</h2>
-      <div class="card project-card">
-        <div class="project-image">
-          <img src="images/pic02.jpg" alt="GDevelop Project">
-        </div>
-        <div class="project-content">
-          <p class="subtitle" style="margin-bottom: 0.5rem;">Check out my game!</p>
-          <a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">Play Now →</a>
+    <section id="sec-3">
+      <div class="card">
+        <div class="img-box"><img src="images/pic02.jpg" alt="GDevelop"></div>
+        <div style="padding:15px;">
+          <h3>GDevelop</h3>
+          <a href="https://gd.games/games/6d9ac45b-3c74-42bd-abdd-4529e874b4f0" target="_blank" class="btn">Play Game</a>
         </div>
       </div>
     </section>
 
-    <section id="sec-youtube">
-      <h2 class="section-title">YouTube</h2>
-      <div class="card project-card">
-        <div class="project-image">
-          <img src="images/pic03.jpg" alt="YouTube Channel">
-        </div>
-        <div class="project-content">
-          <p class="subtitle" style="margin-bottom: 0.5rem;">Watch my simple gaming content!</p>
-          <a href="https://youtube.com/@hotdogpandesal-gaming?si=mxgZnGF4sPheFv-Z" target="_blank" class="btn">Watch →</a>
+    <section id="sec-4">
+      <div class="card">
+        <div class="img-box"><img src="images/pic03.jpg" alt="YouTube"></div>
+        <div style="padding:15px;">
+          <h3>YouTube</h3>
+          <a href="https://youtube.com/@hotdogpandesal-gaming" target="_blank" class="btn">Subscribe</a>
         </div>
       </div>
     </section>
 
-    <section id="sec-github">
-      <h2 class="section-title">GitHub</h2>
-      <div class="card project-card">
-        <div class="project-image">
-          <img src="images/pic04.jpg" alt="GitHub Profile">
-        </div>
-        <div class="project-content">
-          <p class="subtitle" style="margin-bottom: 0.5rem;">View my code and projects!</p>
-          <a href="https://github.com/Clainesemania" target="_blank" class="btn">View Code →</a>
+    <section id="sec-5">
+      <div class="card">
+        <div class="img-box"><img src="images/pic04.jpg" alt="GitHub"></div>
+        <div style="padding:15px;">
+          <h3>GitHub</h3>
+          <a href="https://github.com/Clainesemania" target="_blank" class="btn">View Repo</a>
         </div>
       </div>
     </section>
 
-    <section id="sec-footer">
-      <i class="fa-solid fa-code" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></i>
-      <h2 class="title" style="font-size: 2.5rem; color: var(--text-main);">Still Improving.</h2>
-      <p class="subtitle">Thank you for visiting my portfolio.</p>
-      <div style="width: 50px; height: 2px; background: var(--accent); margin: 2rem auto;"></div>
-      <p style="color: var(--text-muted); font-size: 0.9rem;">© Claine</p>
+    <section id="sec-6">
+      <h2 class="title" style="font-size: 2rem;">Still Improving</h2>
+      <p style="opacity: 0.6;">Work in progress... © Claine</p>
     </section>
-
   </main>
 
   <script>
-    function switchSection(sectionId, btnElement) {
-      // Remove active states from all buttons
-      const buttons = document.querySelectorAll('.nav-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      
-      // Add active state to clicked button
-      btnElement.classList.add('active');
+    // 1. GENERATE STARFIELD (Pure CSS box-shadow generation)
+    function generateStars(id, count) {
+      let stars = "";
+      for (let i = 0; i < count; i++) {
+        stars += `${Math.random() * 2000}px ${Math.random() * 2000}px #FFF, `;
+      }
+      document.getElementById(id).style.boxShadow = stars.slice(0, -2);
+    }
+    generateStars('stars1', 700);
+    generateStars('stars2', 200);
 
-      // Remove active state from all sections
-      const sections = document.querySelectorAll('section');
-      sections.forEach(sec => sec.classList.remove('active-section'));
+    // 2. TECH CLICK SOUND (Web Audio API)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBlip() {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    }
 
-      // Add active state to target section
-      const targetSection = document.getElementById(sectionId);
-      targetSection.classList.add('active-section');
+    // 3. SECTION SWITCHER
+    function switchSection(id, btn) {
+      playBlip(); // Play sound
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
+      document.getElementById(id).classList.add('active-section');
     }
   </script>
-
 </body>
 </html>
